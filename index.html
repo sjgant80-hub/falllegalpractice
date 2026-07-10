@@ -150,22 +150,19 @@ tr.clickable:hover td{background:var(--ink)}
     'llama-3b':  { id: 'Llama-3.2-3B-Instruct-q4f16_1-MLC',   size: '~2GB',   label: '3B · balanced · default · most laptops' },
     'qwen-7b':   { id: 'Qwen2.5-7B-Instruct-q4f16_1-MLC',     size: '~5GB',   label: '7B · capable · needs decent GPU (M-series Mac / 8GB+ VRAM)' },
     'llama-8b':  { id: 'Llama-3.1-8B-Instruct-q4f16_1-MLC',   size: '~5GB',   label: '8B · common · needs decent GPU' },
-    'llama-70b': { id: 'Llama-3.1-70B-Instruct-q4f16_1-MLC',  size: '~40GB',  label: '70B · frontier · needs serious GPU + 64GB+ RAM' },
-  };
+    'llama-70b': { id: 'Llama-3.1-70B-Instruct-q4f16_1-MLC',  size: '~40GB',  label: '70B · frontier · needs serious GPU + 64GB+ RAM' }};
   const DEFAULT_MODEL = 'llama-3b';
 
   const T3_PROVIDERS = {
     anthropic: { label: 'Anthropic Claude', models: ['claude-sonnet-4-5','claude-opus-4-7','claude-haiku-4-5'], default: 'claude-sonnet-4-5', url: 'https://api.anthropic.com/v1/messages' },
     openai:    { label: 'OpenAI',           models: ['gpt-4o','gpt-4o-mini','o1-mini'],                          default: 'gpt-4o-mini',      url: 'https://api.openai.com/v1/chat/completions' },
-    google:    { label: 'Google Gemini',    models: ['gemini-1.5-pro','gemini-1.5-flash','gemini-2.0-flash-exp'], default: 'gemini-1.5-flash', url: 'https://generativelanguage.googleapis.com/v1beta/models/' },
-  };
+    google:    { label: 'Google Gemini',    models: ['gemini-1.5-pro','gemini-1.5-flash','gemini-2.0-flash-exp'], default: 'gemini-1.5-flash', url: 'https://generativelanguage.googleapis.com/v1beta/models/' }};
 
   // ─── State ───────────────────────────────────────────────────────
   const STATE = {
     config: loadConfig(),
     ai: { ready: false, loading: false, progress: 0, engine: null, model: null },
-    mesh: { active: false, peers: new Map(), bc: null, signal: null },
-  };
+    mesh: { active: false, peers: new Map(), bc: null, signal: null }};
 
   function loadConfig() {
     try { return JSON.parse(localStorage.getItem('fall-kit.config') || '{}'); }
@@ -232,8 +229,7 @@ tr.clickable:hover td{background:var(--ink)}
     if (tier === 'T2' && STATE.ai.ready && STATE.ai.engine) {
       const r = await STATE.ai.engine.chat.completions.create({
         messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: userMsg }],
-        max_tokens: maxTokens,
-      });
+        max_tokens: maxTokens});
       return r.choices[0].message.content;
     }
     if (tier === 'T3' && STATE.config.api_key && STATE.config.api_provider) {
@@ -250,8 +246,7 @@ tr.clickable:hover td{background:var(--ink)}
       const r = await fetch(T3_PROVIDERS.anthropic.url, {
         method: 'POST',
         headers: { 'content-type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01' },
-        body: JSON.stringify({ model, max_tokens: maxTokens, system: sys, messages: [{ role: 'user', content: msg }] }),
-      });
+        body: JSON.stringify({ model, max_tokens: maxTokens, system: sys, messages: [{ role: 'user', content: msg }] })});
       if (!r.ok) throw new Error('Anthropic ' + r.status + ': ' + (await r.text()).slice(0, 200));
       const j = await r.json();
       return j.content[0].text;
@@ -260,8 +255,7 @@ tr.clickable:hover td{background:var(--ink)}
       const r = await fetch(T3_PROVIDERS.openai.url, {
         method: 'POST',
         headers: { 'content-type': 'application/json', 'Authorization': 'Bearer ' + key },
-        body: JSON.stringify({ model, max_tokens: maxTokens, messages: [{ role: 'system', content: sys }, { role: 'user', content: msg }] }),
-      });
+        body: JSON.stringify({ model, max_tokens: maxTokens, messages: [{ role: 'system', content: sys }, { role: 'user', content: msg }] })});
       if (!r.ok) throw new Error('OpenAI ' + r.status);
       const j = await r.json();
       return j.choices[0].message.content;
@@ -270,8 +264,7 @@ tr.clickable:hover td{background:var(--ink)}
       const r = await fetch(T3_PROVIDERS.google.url + model + ':generateContent?key=' + encodeURIComponent(key), {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: sys + '\n\n---\n\n' + msg }] }], generationConfig: { maxOutputTokens: maxTokens } }),
-      });
+        body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: sys + '\n\n---\n\n' + msg }] }], generationConfig: { maxOutputTokens: maxTokens } })});
       if (!r.ok) throw new Error('Google ' + r.status);
       const j = await r.json();
       return j.candidates[0].content.parts[0].text;
@@ -512,8 +505,7 @@ tr.clickable:hover td{background:var(--ink)}
     openMint: openMint,  // v1.2 · launch kcc-mint with this seed prefilled as parent
     MODELS: WEBLLM_MODELS,
     PROVIDERS: T3_PROVIDERS,
-    state: STATE,
-  };
+    state: STATE};
 })(typeof window !== 'undefined' ? window : globalThis);
 
 </script>
@@ -648,7 +640,7 @@ async function maybeSeedDemo(){
  state.timeEntries=[te1,te2];for(const t of state.timeEntries)await idbPut('timeEntries',t);
  const ca1={id:'ca_'+uid(),matterId:m.id,clientId:cl.id,ts:now()-90*dayMs,dateOf:isoDate(now()-90*dayMs),direction:'in',amount:2000,source:'client',notes:'Client funds on account for court fee and experts',reconciledAt:now()-30*dayMs,demo:true};
  const ca2={id:'ca_'+uid(),matterId:m.id,clientId:cl.id,ts:now()-70*dayMs,dateOf:isoDate(now()-70*dayMs),direction:'out',amount:332,source:'client',notes:'Court issue fee — N1 + N9',reconciledAt:now()-30*dayMs,demo:true};
- const ca3={id:'ca_'+uid(),matterId:m.id,clientId:cl.id,ts:now()-3*dayMs,dateOf:isoDate(now()-3*dayMs),direction:'in',amount:1500,source:'mixed',notes:'Mixed receipt — £1000 client funds + £500 unpaid fees — needs split',reconciledAt:null,demo:true};
+ const ca3={id:'ca_'+uid(),matterId:m.id,clientId:cl.id,ts:now()-3*dayMs,dateOf:isoDate(now()-3*dayMs),direction:'in',amount:1500,source:'mixed',notes:'Mixed receipt — TBA0 client funds + TBA unpaid fees — needs split',reconciledAt:null,demo:true};
  state.clientAccount=[ca1,ca2,ca3];for(const e of state.clientAccount)await idbPut('clientAccount',e);
  const d1={id:'di_'+uid(),matterId:m.id,clientId:cl.id,ts:now()-70*dayMs,dateOf:isoDate(now()-70*dayMs),type:'court-fee',vendor:'HMCTS',amount:332,vatable:false,vat:0,total:332,fromClientFunds:true,notes:'N1 issue fee',demo:true};
  const d2={id:'di_'+uid(),matterId:m.id,clientId:cl.id,ts:now()-20*dayMs,dateOf:isoDate(now()-20*dayMs),type:'expert',vendor:'Dr K Lal · orthopaedic',amount:850,vatable:true,vat:170,total:1020,fromClientFunds:false,notes:'Quantum report',demo:true};
@@ -661,8 +653,7 @@ async function maybeSeedDemo(){
  {id:'ex_'+uid(),month:m0,type:'PII insurance',amount:400,notes:'Monthly PI accrual',ts:now(),demo:true},
  {id:'ex_'+uid(),month:m0,type:'AML supervision',amount:90,notes:'SRA supervision annual / 12',ts:now(),demo:true},
  {id:'ex_'+uid(),month:m0,type:'Practising certificate',amount:120,notes:'PC fee accrual',ts:now(),demo:true},
- {id:'ex_'+uid(),month:m0,type:'Premises',amount:2200,notes:'Chambers · monthly',ts:now(),demo:true},
- ];
+ {id:'ex_'+uid(),month:m0,type:'Premises',amount:2200,notes:'Chambers · monthly',ts:now(),demo:true}];
  state.expenses=exp;for(const e of exp)await idbPut('expenses',e);
  state.settings.demoLoaded=true;state.selectedMatterId=m.id;state.selectedAdviserId=adv1.id;state.selectedClientId=cl.id;
  await saveState();persistSettingsLS();
@@ -818,7 +809,7 @@ Both must be approved by the SRA, be a manager or employee of the firm, and (for
 Your firm: COLP = **${esc(state.advisers.find(a=>a.id===state.settings.colpId)?.name||'(not set — open Settings)')}** · COFA = **${esc(state.advisers.find(a=>a.id===state.settings.cofaId)?.name||'(not set)')}**.`},
  {id:'pii-min',match:/pi+ (insurance|minimum|cover|policy)|professional indemnit/i,answer:()=>`**SRA PII — minimum terms & conditions:**
 
-- **Minimum cover** · £${(RULES.piMinCover/1000000).toFixed(0)}m per claim for incorporated practices · £2m per claim for unlimited/LLPs.
+- **Minimum cover** · £${(RULES.piMinCover/1000000).toFixed(0)}m per claim for incorporated practices · TBAm per claim for unlimited/LLPs.
 - **Mandatory terms** · "any one claim" basis, must not exclude dishonesty of the firm (only the actual dishonest individual), must include run-off cover.
 - **Run-off** · 6 years' run-off triggered automatically on firm cessation; estimated as up to 300% of last annual premium.
 - Cover from a **Participating Insurer** on the SRA-approved list.
@@ -864,7 +855,7 @@ Typical disbursements meeting this test:
 - **Land Registry fees** — no VAT.
 - **Companies House** fees — no VAT.
 - **Counsel's fees** — VATable (counsel charges VAT; see Counsel question).
-- **Search fees** — depends on supplier; many are now treated as firm's purchase (vatable) post-Brabners.
+- **Search fees** — depends on supplier; many are now treated as firm's Access (vatable) post-Brabners.
 - **Expert reports** — vatable (the firm purchases the report).
 - **Oath fees** — outside scope.
 - **Travel & subsistence** — almost always firm cost, vatable.
@@ -930,15 +921,14 @@ Best practice: weekly "earned-but-undrawn" sweep, double-signed by COFA + respon
  {id:'stale-balances',match:/stale|residual|small balance|dormant|abandon/i,answer:()=>`**Stale / residual client-account balances (rule 5.1(c)):**
 
 Where money is left on a client matter after the work is concluded and you've made reasonable attempts to return it, you may:
-- **Donate to charity** if the balance is £500 or less — keeping a record of:
+- **Donate to charity** if the balance is TBA or less — keeping a record of:
  - the amount, the matter, the steps taken to return,
  - the date and charity, and
  - an indemnity in case the client later claims.
-- For balances **over £500**, you must apply to the SRA for permission (the "prescribed circumstances" route).
+- For balances **over TBA**, you must apply to the SRA for permission (the "prescribed circumstances" route).
 - Keep records for **6 years** minimum.
 
-Don't let residual balances accumulate — most SRA-intervention cases start here. Run a quarterly stale-balance review (matter inactive > 6 months + balance > £0).`},
-];
+Don't let residual balances accumulate — most SRA-intervention cases start here. Run a quarterly stale-balance review (matter inactive > 6 months + balance > TBA).`}];
 async function answerQuestion(q){
  for(const r of T0_RULES){if(r.match.test(q))return{src:'T0 · SRA rules engine',text:r.answer()}}
  const tier=await Cascade.detectTier();
@@ -1376,7 +1366,7 @@ function viewQA(){
  <div class="chat-input"><input type="text" id="qInput" placeholder="ask the SRA rules engine..." onkeypress="if(event.key==='Enter')askQA()"><button class="btn primary" onclick="askQA()">ask</button></div>
  </div>`;
 }
-function formatBotText(t){return esc(t).replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/`([^`]+)`/g,'<code style="background:var(--ink);padding:1px 5px;border-radius:2px;font-size:11px">$1</code>').replace(/\n/g,'<br>')}
+function formatBotText(t){return esc(t).replace(/\*\*([^*]+)\*\*/g,'<strong>TBA</strong>').replace(/`([^`]+)`/g,'<code style="background:var(--ink);padding:1px 5px;border-radius:2px;font-size:11px">TBA</code>').replace(/\n/g,'<br>')}
 function scrollChatBottom(){const c=$('#chatScroll');if(c)c.scrollTop=c.scrollHeight}
 async function askQA(){const inp=$('#qInput');const q=(inp.value||'').trim();if(!q)return;state.chat.push({role:'user',text:q,ts:now()});inp.value='';render();const ans=await answerQuestion(q);state.chat.push({role:'bot',text:ans.text,src:ans.src,ts:now()});await saveState();render()}
 
@@ -1432,7 +1422,7 @@ async function importTimeCSV(ev){
  const head=lines[0].split(',').map(s=>s.replace(/"/g,'').trim());
  let added=0;
  for(let i=1;i<lines.length;i++){
- const row=lines[i].match(/("([^"]|"")*"|[^,]+)/g)||[];
+ const row=lines[i].match(/("([^"]|"")*"|[^]+)/g)||[];
  const obj={};head.forEach((k,j)=>{obj[k]=(row[j]||'').replace(/^"|"$/g,'').replace(/""/g,'"').trim()});
  if(!obj.activity)continue;
  const mt=state.matters.find(m=>m.ref===obj.matterRef);

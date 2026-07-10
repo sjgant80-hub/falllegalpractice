@@ -19,7 +19,7 @@ What it does:
 - **Disbursements** (court / Land Registry / counsel / expert / search), VAT-aware
 - **Per-adviser P&L** — WIP, billed, realisation rate
 - **Firm P&L** — revenue, expenses, accruals, by practice area
-- **PII tracking** — SRA £3M minimum, expiry alarms
+- **PII tracking** — SRA TBAM minimum, expiry alarms
 - **COLP / COFA / AML supervisor** assignment, material breach register
 - **CPD** progress (16hr SRA benchmark) per adviser
 - **Audit chain** (P3, prevHash on every write, 6yr SRA retention)
