@@ -1942,5 +1942,24 @@ window.addEventListener('message',async e=>{const m=e.data;if(!m||typeof m!=='ob
 window.FALLLEGALPRACTICE={version:VERSION,prime:PRIME,state:()=>state,recordTime:async t=>{const te={id:'te_'+uid(),ts:now(),dateOf:isoDate(now()),units:1,minutes:RULES.unitMinutes,billable:true,rate:state.settings.hourlyRate||285,...t};state.timeEntries.push(te);await idbPut('timeEntries',te);await appendAudit('time.api','API logged',{id:te.id});render();return te},clientAccountHeld:clientAccountTotalHeld,ytd:ytdRevenue,wip:totalWIP,ask:answerQuestion,interestWatch:interestWatchEntries,unsplitMixed:unsplitMixed};
 (async function boot(){try{await loadAll();await maybeSeedDemo();setupMesh();render();updateTierBadge();console.log('[falllegalpractice]','v'+VERSION,'prime',PRIME,'loaded · matters:',state.matters.length,'advisers:',state.advisers.length,'time:',state.timeEntries.length,'clientAcct:',state.clientAccount.length)}catch(e){console.error('[falllegalpractice] boot fail',e);$('#view').innerHTML='<div class="disclaimer">Boot failed: '+esc(e.message)+'</div>'}})();
 </script>
+
+
+<!-- ═══════════════════════ AUTOPILOT · fall-autopilot-kit ═══════════════════════ -->
+<script type="module">
+  try {
+    const { installAutopilot } = await import('https://sjgant80-hub.github.io/fall-autopilot-kit/src/autopilot.js');
+    const manifestRes = await fetch('https://sjgant80-hub.github.io/fall-autopilot-kit/manifests/falllegalpractice.json');
+    const manifest = await manifestRes.json();
+    manifest.actions = manifest.actions.map(a => ({ ...a, run: async (params) => {
+      const fn = window._app?.[a.id];
+      if (typeof fn === 'function') return fn(params);
+      alert('Autopilot proposes: ' + a.name + ' · params: ' + JSON.stringify(params) + '\n\nThis tool has not yet implemented the ' + a.id + ' handler. Proposal logged to audit.');
+      return { stub: true, action: a.id, params };
+    }}));
+    manifest.state = () => ({ ...(window._app || {}), now: new Date().toISOString() });
+    installAutopilot(manifest);
+  } catch (e) { console.warn('[autopilot] init failed:', e); }
+</script>
+
 </body>
 </html>
