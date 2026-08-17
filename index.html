@@ -809,7 +809,7 @@ Both must be approved by the SRA, be a manager or employee of the firm, and (for
 Your firm: COLP = **${esc(state.advisers.find(a=>a.id===state.settings.colpId)?.name||'(not set — open Settings)')}** · COFA = **${esc(state.advisers.find(a=>a.id===state.settings.cofaId)?.name||'(not set)')}**.`},
  {id:'pii-min',match:/pi+ (insurance|minimum|cover|policy)|professional indemnit/i,answer:()=>`**SRA PII — minimum terms & conditions:**
 
-- **Minimum cover** · £${(RULES.piMinCover/1000000).toFixed(0)}m per claim for incorporated practices · TBAm per claim for unlimited/LLPs.
+- **Minimum cover** · £${(RULES.piMinCover/1000000).toFixed(0)}m per claim for incorporated practices · £2m per claim for unlimited/LLPs.
 - **Mandatory terms** · "any one claim" basis, must not exclude dishonesty of the firm (only the actual dishonest individual), must include run-off cover.
 - **Run-off** · 6 years' run-off triggered automatically on firm cessation; estimated as up to 300% of last annual premium.
 - Cover from a **Participating Insurer** on the SRA-approved list.
