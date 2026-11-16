@@ -1221,7 +1221,7 @@ async function maybeSeedDemo(){
  state.timeEntries=[te1,te2];for(const t of state.timeEntries)await idbPut('timeEntries',t);
  const ca1={id:'ca_'+uid(),matterId:m.id,clientId:cl.id,ts:now()-90*dayMs,dateOf:isoDate(now()-90*dayMs),direction:'in',amount:2000,source:'client',notes:'Client funds on account for court fee and experts',reconciledAt:now()-30*dayMs,demo:true};
  const ca2={id:'ca_'+uid(),matterId:m.id,clientId:cl.id,ts:now()-70*dayMs,dateOf:isoDate(now()-70*dayMs),direction:'out',amount:332,source:'client',notes:'Court issue fee — N1 + N9',reconciledAt:now()-30*dayMs,demo:true};
- const ca3={id:'ca_'+uid(),matterId:m.id,clientId:cl.id,ts:now()-3*dayMs,dateOf:isoDate(now()-3*dayMs),direction:'in',amount:1500,source:'mixed',notes:'Mixed receipt — TBA0 client funds + TBA unpaid fees — needs split',reconciledAt:null,demo:true};
+ const ca3={id:'ca_'+uid(),matterId:m.id,clientId:cl.id,ts:now()-3*dayMs,dateOf:isoDate(now()-3*dayMs),direction:'in',amount:1500,source:'mixed',notes:'Mixed receipt — £1000 client funds + £500 unpaid fees — needs split',reconciledAt:null,demo:true};
  state.clientAccount=[ca1,ca2,ca3];for(const e of state.clientAccount)await idbPut('clientAccount',e);
  const d1={id:'di_'+uid(),matterId:m.id,clientId:cl.id,ts:now()-70*dayMs,dateOf:isoDate(now()-70*dayMs),type:'court-fee',vendor:'HMCTS',amount:332,vatable:false,vat:0,total:332,fromClientFunds:true,notes:'N1 issue fee',demo:true};
  const d2={id:'di_'+uid(),matterId:m.id,clientId:cl.id,ts:now()-20*dayMs,dateOf:isoDate(now()-20*dayMs),type:'expert',vendor:'Dr K Lal · orthopaedic',amount:850,vatable:true,vat:170,total:1020,fromClientFunds:false,notes:'Quantum report',demo:true};
@@ -1502,14 +1502,14 @@ Best practice: weekly "earned-but-undrawn" sweep, double-signed by COFA + respon
  {id:'stale-balances',match:/stale|residual|small balance|dormant|abandon/i,answer:()=>`**Stale / residual client-account balances (rule 5.1(c)):**
 
 Where money is left on a client matter after the work is concluded and you've made reasonable attempts to return it, you may:
-- **Donate to charity** if the balance is TBA or less — keeping a record of:
+- **Donate to charity** if the balance is £500 or less — keeping a record of:
  - the amount, the matter, the steps taken to return,
  - the date and charity, and
  - an indemnity in case the client later claims.
-- For balances **over TBA**, you must apply to the SRA for permission (the "prescribed circumstances" route).
+- For balances **over £500**, you must apply to the SRA for permission (the "prescribed circumstances" route).
 - Keep records for **6 years** minimum.
 
-Don't let residual balances accumulate — most SRA-intervention cases start here. Run a quarterly stale-balance review (matter inactive > 6 months + balance > TBA).`}];
+Don't let residual balances accumulate — most SRA-intervention cases start here. Run a quarterly stale-balance review (matter inactive > 6 months + balance > £0).`}];
 async function answerQuestion(q){
  for(const r of T0_RULES){if(r.match.test(q))return{src:'T0 · SRA rules engine',text:r.answer()}}
  const tier=await Cascade.detectTier();
