@@ -1947,7 +1947,7 @@ function viewQA(){
  <div class="chat-input"><input type="text" id="qInput" placeholder="ask the SRA rules engine..." onkeypress="if(event.key==='Enter')askQA()"><button class="btn primary" onclick="askQA()">ask</button></div>
  </div>`;
 }
-function formatBotText(t){return esc(t).replace(/\*\*([^*]+)\*\*/g,'<strong>TBA</strong>').replace(/`([^`]+)`/g,'<code style="background:var(--ink);padding:1px 5px;border-radius:2px;font-size:11px">TBA</code>').replace(/\n/g,'<br>')}
+function formatBotText(t){return esc(t).replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/`([^`]+)`/g,'<code style="background:var(--ink);padding:1px 5px;border-radius:2px;font-size:11px">$1</code>').replace(/\n/g,'<br>')}
 function scrollChatBottom(){const c=$('#chatScroll');if(c)c.scrollTop=c.scrollHeight}
 async function askQA(){const inp=$('#qInput');const q=(inp.value||'').trim();if(!q)return;state.chat.push({role:'user',text:q,ts:now()});inp.value='';render();const ans=await answerQuestion(q);state.chat.push({role:'bot',text:ans.text,src:ans.src,ts:now()});await saveState();render()}
 
